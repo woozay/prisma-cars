@@ -6,6 +6,15 @@ const resolvers = {
         carMakes: (parent, args, context) => {
             return context.db.carMakes()
         }
+    },
+    Mutation: {
+        addCar: async (parent, args, context, info) => {
+            console.log(args.make);
+            const make = await context.db.carMakes({where: {name: args.make}});
+
+            console.log(make);
+            return make[0];
+        }
     }
 }
 const server = new GraphQLServer({
