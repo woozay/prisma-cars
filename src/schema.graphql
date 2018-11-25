@@ -1,0 +1,5 @@
+# import CarMake from "./generated/prisma-schema/prisma.graphql"
+
+type Query {
+  carMakes: [CarMake!]!
+}

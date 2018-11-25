@@ -1,0 +1,40 @@
+type User {
+  id: ID! @unique
+  name: String!
+}
+
+type Post {
+  id: ID! @unique
+  title: String!
+  published: Boolean! @default(value: "false")
+  author: User
+}
+
+type CarMake {
+  id: ID! @unique
+  name: String! @unique
+  models: [CarModel!]!
+}
+
+type CarModel {
+  id: ID! @unique
+  name: String!
+  make: CarMake!
+  trims: [CarTrim!]!
+}
+
+type CarTrim {
+  id: ID! @unique
+  name: String!
+  model: CarModel!
+  cars: [Car!]!
+}
+
+type Car {
+  id: ID! @unique
+  trim: CarTrim
+  zero_to_60: Float
+  no_of_doors: Int
+  no_of_seats: Int
+  power_ps: Int
+}
