@@ -13,8 +13,8 @@ type Mutation {
     fuel_type: String,
     year_from: Int,
     year_to: Int,
-    zero_to_60: String,
-    no_of_doors: String,
-    no_of_seats: String,
+    zero_to_sixty: Float,
+    no_of_doors: Int,
+    no_of_seats: Int,
     power_ps: Int): CarMake
 }
