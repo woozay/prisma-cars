@@ -11,6 +11,8 @@ type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 
 export interface Exists {
   car: (where?: CarWhereInput) => Promise<boolean>;
+  carBodyType: (where?: CarBodyTypeWhereInput) => Promise<boolean>;
+  carFuelType: (where?: CarFuelTypeWhereInput) => Promise<boolean>;
   carMake: (where?: CarMakeWhereInput) => Promise<boolean>;
   carModel: (where?: CarModelWhereInput) => Promise<boolean>;
   carTrim: (where?: CarTrimWhereInput) => Promise<boolean>;
@@ -60,6 +62,52 @@ export interface Prisma {
       last?: Int;
     }
   ) => CarConnectionPromise;
+  carBodyType: (where: CarBodyTypeWhereUniqueInput) => CarBodyTypePromise;
+  carBodyTypes: (
+    args?: {
+      where?: CarBodyTypeWhereInput;
+      orderBy?: CarBodyTypeOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<CarBodyType>;
+  carBodyTypesConnection: (
+    args?: {
+      where?: CarBodyTypeWhereInput;
+      orderBy?: CarBodyTypeOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => CarBodyTypeConnectionPromise;
+  carFuelType: (where: CarFuelTypeWhereUniqueInput) => CarFuelTypePromise;
+  carFuelTypes: (
+    args?: {
+      where?: CarFuelTypeWhereInput;
+      orderBy?: CarFuelTypeOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<CarFuelType>;
+  carFuelTypesConnection: (
+    args?: {
+      where?: CarFuelTypeWhereInput;
+      orderBy?: CarFuelTypeOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => CarFuelTypeConnectionPromise;
   carMake: (where: CarMakeWhereUniqueInput) => CarMakePromise;
   carMakes: (
     args?: {
@@ -197,6 +245,48 @@ export interface Prisma {
   ) => CarPromise;
   deleteCar: (where: CarWhereUniqueInput) => CarPromise;
   deleteManyCars: (where?: CarWhereInput) => BatchPayloadPromise;
+  createCarBodyType: (data: CarBodyTypeCreateInput) => CarBodyTypePromise;
+  updateCarBodyType: (
+    args: { data: CarBodyTypeUpdateInput; where: CarBodyTypeWhereUniqueInput }
+  ) => CarBodyTypePromise;
+  updateManyCarBodyTypes: (
+    args: {
+      data: CarBodyTypeUpdateManyMutationInput;
+      where?: CarBodyTypeWhereInput;
+    }
+  ) => BatchPayloadPromise;
+  upsertCarBodyType: (
+    args: {
+      where: CarBodyTypeWhereUniqueInput;
+      create: CarBodyTypeCreateInput;
+      update: CarBodyTypeUpdateInput;
+    }
+  ) => CarBodyTypePromise;
+  deleteCarBodyType: (where: CarBodyTypeWhereUniqueInput) => CarBodyTypePromise;
+  deleteManyCarBodyTypes: (
+    where?: CarBodyTypeWhereInput
+  ) => BatchPayloadPromise;
+  createCarFuelType: (data: CarFuelTypeCreateInput) => CarFuelTypePromise;
+  updateCarFuelType: (
+    args: { data: CarFuelTypeUpdateInput; where: CarFuelTypeWhereUniqueInput }
+  ) => CarFuelTypePromise;
+  updateManyCarFuelTypes: (
+    args: {
+      data: CarFuelTypeUpdateManyMutationInput;
+      where?: CarFuelTypeWhereInput;
+    }
+  ) => BatchPayloadPromise;
+  upsertCarFuelType: (
+    args: {
+      where: CarFuelTypeWhereUniqueInput;
+      create: CarFuelTypeCreateInput;
+      update: CarFuelTypeUpdateInput;
+    }
+  ) => CarFuelTypePromise;
+  deleteCarFuelType: (where: CarFuelTypeWhereUniqueInput) => CarFuelTypePromise;
+  deleteManyCarFuelTypes: (
+    where?: CarFuelTypeWhereInput
+  ) => BatchPayloadPromise;
   createCarMake: (data: CarMakeCreateInput) => CarMakePromise;
   updateCarMake: (
     args: { data: CarMakeUpdateInput; where: CarMakeWhereUniqueInput }
@@ -289,6 +379,12 @@ export interface Subscription {
   car: (
     where?: CarSubscriptionWhereInput
   ) => CarSubscriptionPayloadSubscription;
+  carBodyType: (
+    where?: CarBodyTypeSubscriptionWhereInput
+  ) => CarBodyTypeSubscriptionPayloadSubscription;
+  carFuelType: (
+    where?: CarFuelTypeSubscriptionWhereInput
+  ) => CarFuelTypeSubscriptionPayloadSubscription;
   carMake: (
     where?: CarMakeSubscriptionWhereInput
   ) => CarMakeSubscriptionPayloadSubscription;
@@ -337,6 +433,10 @@ export type CarTrimOrderByInput =
 export type CarOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "year_from_ASC"
+  | "year_from_DESC"
+  | "year_to_ASC"
+  | "year_to_DESC"
   | "zero_to_60_ASC"
   | "zero_to_60_DESC"
   | "no_of_doors_ASC"
@@ -345,6 +445,26 @@ export type CarOrderByInput =
   | "no_of_seats_DESC"
   | "power_ps_ASC"
   | "power_ps_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type CarBodyTypeOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type CarFuelTypeOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -384,29 +504,92 @@ export type UserOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface CarMakeUpdateWithoutModelsDataInput {
-  name?: String;
+export interface CarBodyTypeUpsertWithoutCarsInput {
+  update: CarBodyTypeUpdateWithoutCarsDataInput;
+  create: CarBodyTypeCreateWithoutCarsInput;
 }
 
 export type CarWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface CarUpdateWithoutTrimDataInput {
+export interface CarTrimCreateWithoutCarsInput {
+  name: String;
+  model: CarModelCreateOneWithoutTrimsInput;
+}
+
+export interface CarCreateWithoutTrimInput {
+  body_type?: CarBodyTypeCreateOneWithoutCarsInput;
+  fuel_type?: CarFuelTypeCreateOneWithoutCarsInput;
+  year_from?: Int;
+  year_to?: Int;
   zero_to_60?: Float;
   no_of_doors?: Int;
   no_of_seats?: Int;
   power_ps?: Int;
 }
 
-export interface CarTrimUpdateWithWhereUniqueWithoutModelInput {
-  where: CarTrimWhereUniqueInput;
-  data: CarTrimUpdateWithoutModelDataInput;
+export interface CarModelCreateOneWithoutTrimsInput {
+  create?: CarModelCreateWithoutTrimsInput;
+  connect?: CarModelWhereUniqueInput;
 }
 
-export interface CarUpdateWithWhereUniqueWithoutTrimInput {
-  where: CarWhereUniqueInput;
-  data: CarUpdateWithoutTrimDataInput;
+export interface CarBodyTypeWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  cars_every?: CarWhereInput;
+  cars_some?: CarWhereInput;
+  cars_none?: CarWhereInput;
+  AND?: CarBodyTypeWhereInput[] | CarBodyTypeWhereInput;
+  OR?: CarBodyTypeWhereInput[] | CarBodyTypeWhereInput;
+  NOT?: CarBodyTypeWhereInput[] | CarBodyTypeWhereInput;
+}
+
+export interface CarModelCreateWithoutTrimsInput {
+  name: String;
+  make: CarMakeCreateOneWithoutModelsInput;
+}
+
+export interface PostSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: PostWhereInput;
+  AND?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
+  OR?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
+  NOT?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
+}
+
+export interface CarMakeCreateOneWithoutModelsInput {
+  create?: CarMakeCreateWithoutModelsInput;
+  connect?: CarMakeWhereUniqueInput;
 }
 
 export interface CarTrimWhereInput {
@@ -447,15 +630,63 @@ export interface CarTrimWhereInput {
   NOT?: CarTrimWhereInput[] | CarTrimWhereInput;
 }
 
-export interface PostSubscriptionWhereInput {
+export interface CarMakeCreateWithoutModelsInput {
+  name: String;
+}
+
+export interface CarTrimSubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType;
   updatedFields_contains?: String;
   updatedFields_contains_every?: String[] | String;
   updatedFields_contains_some?: String[] | String;
-  node?: PostWhereInput;
-  AND?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
-  OR?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
-  NOT?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
+  node?: CarTrimWhereInput;
+  AND?: CarTrimSubscriptionWhereInput[] | CarTrimSubscriptionWhereInput;
+  OR?: CarTrimSubscriptionWhereInput[] | CarTrimSubscriptionWhereInput;
+  NOT?: CarTrimSubscriptionWhereInput[] | CarTrimSubscriptionWhereInput;
+}
+
+export interface CarBodyTypeCreateOneWithoutCarsInput {
+  create?: CarBodyTypeCreateWithoutCarsInput;
+  connect?: CarBodyTypeWhereUniqueInput;
+}
+
+export interface CarMakeSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: CarMakeWhereInput;
+  AND?: CarMakeSubscriptionWhereInput[] | CarMakeSubscriptionWhereInput;
+  OR?: CarMakeSubscriptionWhereInput[] | CarMakeSubscriptionWhereInput;
+  NOT?: CarMakeSubscriptionWhereInput[] | CarMakeSubscriptionWhereInput;
+}
+
+export interface CarBodyTypeCreateWithoutCarsInput {
+  name?: String;
+}
+
+export interface CarBodyTypeSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: CarBodyTypeWhereInput;
+  AND?: CarBodyTypeSubscriptionWhereInput[] | CarBodyTypeSubscriptionWhereInput;
+  OR?: CarBodyTypeSubscriptionWhereInput[] | CarBodyTypeSubscriptionWhereInput;
+  NOT?: CarBodyTypeSubscriptionWhereInput[] | CarBodyTypeSubscriptionWhereInput;
+}
+
+export interface CarFuelTypeCreateOneWithoutCarsInput {
+  create?: CarFuelTypeCreateWithoutCarsInput;
+  connect?: CarFuelTypeWhereUniqueInput;
+}
+
+export interface UserUpdateManyMutationInput {
+  name?: String;
+}
+
+export interface CarFuelTypeCreateWithoutCarsInput {
+  name?: String;
 }
 
 export interface CarModelWhereInput {
@@ -496,97 +727,22 @@ export interface CarModelWhereInput {
   NOT?: CarModelWhereInput[] | CarModelWhereInput;
 }
 
-export interface CarCreateInput {
-  trim?: CarTrimCreateOneWithoutCarsInput;
+export interface CarUpdateInput {
+  trim?: CarTrimUpdateOneWithoutCarsInput;
+  body_type?: CarBodyTypeUpdateOneWithoutCarsInput;
+  fuel_type?: CarFuelTypeUpdateOneWithoutCarsInput;
+  year_from?: Int;
+  year_to?: Int;
   zero_to_60?: Float;
   no_of_doors?: Int;
   no_of_seats?: Int;
   power_ps?: Int;
-}
-
-export interface CarModelSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: CarModelWhereInput;
-  AND?: CarModelSubscriptionWhereInput[] | CarModelSubscriptionWhereInput;
-  OR?: CarModelSubscriptionWhereInput[] | CarModelSubscriptionWhereInput;
-  NOT?: CarModelSubscriptionWhereInput[] | CarModelSubscriptionWhereInput;
-}
-
-export interface CarTrimCreateOneWithoutCarsInput {
-  create?: CarTrimCreateWithoutCarsInput;
-  connect?: CarTrimWhereUniqueInput;
-}
-
-export interface CarSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: CarWhereInput;
-  AND?: CarSubscriptionWhereInput[] | CarSubscriptionWhereInput;
-  OR?: CarSubscriptionWhereInput[] | CarSubscriptionWhereInput;
-  NOT?: CarSubscriptionWhereInput[] | CarSubscriptionWhereInput;
-}
-
-export interface CarTrimCreateWithoutCarsInput {
-  name: String;
-  model: CarModelCreateOneWithoutTrimsInput;
-}
-
-export interface UserUpdateInput {
-  name?: String;
-}
-
-export interface CarModelCreateOneWithoutTrimsInput {
-  create?: CarModelCreateWithoutTrimsInput;
-  connect?: CarModelWhereUniqueInput;
 }
 
 export interface PostUpdateManyMutationInput {
   title?: String;
   published?: Boolean;
 }
-
-export interface CarModelCreateWithoutTrimsInput {
-  name: String;
-  make: CarMakeCreateOneWithoutModelsInput;
-}
-
-export interface UserUpdateDataInput {
-  name?: String;
-}
-
-export interface CarMakeCreateOneWithoutModelsInput {
-  create?: CarMakeCreateWithoutModelsInput;
-  connect?: CarMakeWhereUniqueInput;
-}
-
-export type CarModelWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface CarMakeCreateWithoutModelsInput {
-  name: String;
-}
-
-export interface UserCreateInput {
-  name: String;
-}
-
-export interface CarUpdateInput {
-  trim?: CarTrimUpdateOneWithoutCarsInput;
-  zero_to_60?: Float;
-  no_of_doors?: Int;
-  no_of_seats?: Int;
-  power_ps?: Int;
-}
-
-export type CarTrimWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
 
 export interface CarTrimUpdateOneWithoutCarsInput {
   create?: CarTrimCreateWithoutCarsInput;
@@ -597,18 +753,23 @@ export interface CarTrimUpdateOneWithoutCarsInput {
   connect?: CarTrimWhereUniqueInput;
 }
 
-export interface CarTrimUpdateManyMutationInput {
-  name?: String;
-}
+export type CarFuelTypeWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
 
 export interface CarTrimUpdateWithoutCarsDataInput {
   name?: String;
   model?: CarModelUpdateOneRequiredWithoutTrimsInput;
 }
 
-export type PostWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
+export interface UserUpdateOneInput {
+  create?: UserCreateInput;
+  update?: UserUpdateDataInput;
+  upsert?: UserUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: UserWhereUniqueInput;
+}
 
 export interface CarModelUpdateOneRequiredWithoutTrimsInput {
   create?: CarModelCreateWithoutTrimsInput;
@@ -617,13 +778,100 @@ export interface CarModelUpdateOneRequiredWithoutTrimsInput {
   connect?: CarModelWhereUniqueInput;
 }
 
-export interface CarModelUpdateManyMutationInput {
-  name?: String;
+export interface UserCreateInput {
+  name: String;
 }
 
 export interface CarModelUpdateWithoutTrimsDataInput {
   name?: String;
   make?: CarMakeUpdateOneRequiredWithoutModelsInput;
+}
+
+export interface UserCreateOneInput {
+  create?: UserCreateInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface CarMakeUpdateOneRequiredWithoutModelsInput {
+  create?: CarMakeCreateWithoutModelsInput;
+  update?: CarMakeUpdateWithoutModelsDataInput;
+  upsert?: CarMakeUpsertWithoutModelsInput;
+  connect?: CarMakeWhereUniqueInput;
+}
+
+export interface CarTrimUpdateManyMutationInput {
+  name?: String;
+}
+
+export interface CarMakeUpdateWithoutModelsDataInput {
+  name?: String;
+}
+
+export type CarModelWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface CarMakeUpsertWithoutModelsInput {
+  update: CarMakeUpdateWithoutModelsDataInput;
+  create: CarMakeCreateWithoutModelsInput;
+}
+
+export interface CarModelUpdateManyMutationInput {
+  name?: String;
+}
+
+export interface CarModelUpsertWithoutTrimsInput {
+  update: CarModelUpdateWithoutTrimsDataInput;
+  create: CarModelCreateWithoutTrimsInput;
+}
+
+export type CarTrimWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface CarTrimUpsertWithoutCarsInput {
+  update: CarTrimUpdateWithoutCarsDataInput;
+  create: CarTrimCreateWithoutCarsInput;
+}
+
+export interface CarMakeUpdateManyMutationInput {
+  name?: String;
+}
+
+export interface CarBodyTypeUpdateOneWithoutCarsInput {
+  create?: CarBodyTypeCreateWithoutCarsInput;
+  update?: CarBodyTypeUpdateWithoutCarsDataInput;
+  upsert?: CarBodyTypeUpsertWithoutCarsInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: CarBodyTypeWhereUniqueInput;
+}
+
+export type PostWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface CarBodyTypeUpdateWithoutCarsDataInput {
+  name?: String;
+}
+
+export interface CarUpsertWithWhereUniqueWithoutTrimInput {
+  where: CarWhereUniqueInput;
+  update: CarUpdateWithoutTrimDataInput;
+  create: CarCreateWithoutTrimInput;
+}
+
+export interface CarModelUpdateManyWithoutMakeInput {
+  create?: CarModelCreateWithoutMakeInput[] | CarModelCreateWithoutMakeInput;
+  delete?: CarModelWhereUniqueInput[] | CarModelWhereUniqueInput;
+  connect?: CarModelWhereUniqueInput[] | CarModelWhereUniqueInput;
+  disconnect?: CarModelWhereUniqueInput[] | CarModelWhereUniqueInput;
+  update?:
+    | CarModelUpdateWithWhereUniqueWithoutMakeInput[]
+    | CarModelUpdateWithWhereUniqueWithoutMakeInput;
+  upsert?:
+    | CarModelUpsertWithWhereUniqueWithoutMakeInput[]
+    | CarModelUpsertWithWhereUniqueWithoutMakeInput;
 }
 
 export interface UserWhereInput {
@@ -660,90 +908,98 @@ export interface UserWhereInput {
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
-export interface CarMakeUpdateOneRequiredWithoutModelsInput {
-  create?: CarMakeCreateWithoutModelsInput;
-  update?: CarMakeUpdateWithoutModelsDataInput;
-  upsert?: CarMakeUpsertWithoutModelsInput;
-  connect?: CarMakeWhereUniqueInput;
+export interface CarFuelTypeUpdateOneWithoutCarsInput {
+  create?: CarFuelTypeCreateWithoutCarsInput;
+  update?: CarFuelTypeUpdateWithoutCarsDataInput;
+  upsert?: CarFuelTypeUpsertWithoutCarsInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: CarFuelTypeWhereUniqueInput;
 }
 
-export interface CarModelCreateInput {
-  name: String;
-  make: CarMakeCreateOneWithoutModelsInput;
-  trims?: CarTrimCreateManyWithoutModelInput;
+export interface CarUpdateWithWhereUniqueWithoutTrimInput {
+  where: CarWhereUniqueInput;
+  data: CarUpdateWithoutTrimDataInput;
 }
 
-export interface CarUpdateManyWithoutTrimInput {
-  create?: CarCreateWithoutTrimInput[] | CarCreateWithoutTrimInput;
-  delete?: CarWhereUniqueInput[] | CarWhereUniqueInput;
-  connect?: CarWhereUniqueInput[] | CarWhereUniqueInput;
-  disconnect?: CarWhereUniqueInput[] | CarWhereUniqueInput;
-  update?:
-    | CarUpdateWithWhereUniqueWithoutTrimInput[]
-    | CarUpdateWithWhereUniqueWithoutTrimInput;
-  upsert?:
-    | CarUpsertWithWhereUniqueWithoutTrimInput[]
-    | CarUpsertWithWhereUniqueWithoutTrimInput;
+export interface CarFuelTypeUpdateWithoutCarsDataInput {
+  name?: String;
 }
 
-export interface CarModelUpsertWithWhereUniqueWithoutMakeInput {
-  where: CarModelWhereUniqueInput;
-  update: CarModelUpdateWithoutMakeDataInput;
-  create: CarModelCreateWithoutMakeInput;
+export interface CarTrimUpdateWithoutModelDataInput {
+  name?: String;
+  cars?: CarUpdateManyWithoutTrimInput;
 }
 
-export interface CarMakeUpsertWithoutModelsInput {
-  update: CarMakeUpdateWithoutModelsDataInput;
-  create: CarMakeCreateWithoutModelsInput;
+export interface CarFuelTypeUpsertWithoutCarsInput {
+  update: CarFuelTypeUpdateWithoutCarsDataInput;
+  create: CarFuelTypeCreateWithoutCarsInput;
 }
 
-export interface CarTrimUpsertWithWhereUniqueWithoutModelInput {
+export interface CarTrimUpdateWithWhereUniqueWithoutModelInput {
   where: CarTrimWhereUniqueInput;
-  update: CarTrimUpdateWithoutModelDataInput;
-  create: CarTrimCreateWithoutModelInput;
-}
-
-export interface CarModelUpsertWithoutTrimsInput {
-  update: CarModelUpdateWithoutTrimsDataInput;
-  create: CarModelCreateWithoutTrimsInput;
-}
-
-export interface UserSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: UserWhereInput;
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-}
-
-export interface CarTrimUpsertWithoutCarsInput {
-  update: CarTrimUpdateWithoutCarsDataInput;
-  create: CarTrimCreateWithoutCarsInput;
-}
-
-export interface CarTrimSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: CarTrimWhereInput;
-  AND?: CarTrimSubscriptionWhereInput[] | CarTrimSubscriptionWhereInput;
-  OR?: CarTrimSubscriptionWhereInput[] | CarTrimSubscriptionWhereInput;
-  NOT?: CarTrimSubscriptionWhereInput[] | CarTrimSubscriptionWhereInput;
+  data: CarTrimUpdateWithoutModelDataInput;
 }
 
 export interface CarUpdateManyMutationInput {
+  year_from?: Int;
+  year_to?: Int;
   zero_to_60?: Float;
   no_of_doors?: Int;
   no_of_seats?: Int;
   power_ps?: Int;
 }
 
-export interface UserUpdateManyMutationInput {
+export interface CarModelUpdateWithoutMakeDataInput {
   name?: String;
+  trims?: CarTrimUpdateManyWithoutModelInput;
+}
+
+export interface CarMakeUpdateInput {
+  name?: String;
+  models?: CarModelUpdateManyWithoutMakeInput;
+}
+
+export interface CarTrimCreateOneWithoutCarsInput {
+  create?: CarTrimCreateWithoutCarsInput;
+  connect?: CarTrimWhereUniqueInput;
+}
+
+export interface CarFuelTypeWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  cars_every?: CarWhereInput;
+  cars_some?: CarWhereInput;
+  cars_none?: CarWhereInput;
+  AND?: CarFuelTypeWhereInput[] | CarFuelTypeWhereInput;
+  OR?: CarFuelTypeWhereInput[] | CarFuelTypeWhereInput;
+  NOT?: CarFuelTypeWhereInput[] | CarFuelTypeWhereInput;
 }
 
 export interface CarWhereInput {
@@ -762,6 +1018,24 @@ export interface CarWhereInput {
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
   trim?: CarTrimWhereInput;
+  body_type?: CarBodyTypeWhereInput;
+  fuel_type?: CarFuelTypeWhereInput;
+  year_from?: Int;
+  year_from_not?: Int;
+  year_from_in?: Int[] | Int;
+  year_from_not_in?: Int[] | Int;
+  year_from_lt?: Int;
+  year_from_lte?: Int;
+  year_from_gt?: Int;
+  year_from_gte?: Int;
+  year_to?: Int;
+  year_to_not?: Int;
+  year_to_in?: Int[] | Int;
+  year_to_not_in?: Int[] | Int;
+  year_to_lt?: Int;
+  year_to_lte?: Int;
+  year_to_gt?: Int;
+  year_to_gte?: Int;
   zero_to_60?: Float;
   zero_to_60_not?: Float;
   zero_to_60_in?: Float[] | Float;
@@ -799,47 +1073,100 @@ export interface CarWhereInput {
   NOT?: CarWhereInput[] | CarWhereInput;
 }
 
-export interface UserUpsertNestedInput {
-  update: UserUpdateDataInput;
-  create: UserCreateInput;
+export interface CarBodyTypeCreateInput {
+  name?: String;
+  cars?: CarCreateManyWithoutBody_typeInput;
 }
 
-export interface CarTrimUpdateWithoutModelDataInput {
+export interface CarModelSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: CarModelWhereInput;
+  AND?: CarModelSubscriptionWhereInput[] | CarModelSubscriptionWhereInput;
+  OR?: CarModelSubscriptionWhereInput[] | CarModelSubscriptionWhereInput;
+  NOT?: CarModelSubscriptionWhereInput[] | CarModelSubscriptionWhereInput;
+}
+
+export interface CarCreateManyWithoutBody_typeInput {
+  create?: CarCreateWithoutBody_typeInput[] | CarCreateWithoutBody_typeInput;
+  connect?: CarWhereUniqueInput[] | CarWhereUniqueInput;
+}
+
+export interface CarSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: CarWhereInput;
+  AND?: CarSubscriptionWhereInput[] | CarSubscriptionWhereInput;
+  OR?: CarSubscriptionWhereInput[] | CarSubscriptionWhereInput;
+  NOT?: CarSubscriptionWhereInput[] | CarSubscriptionWhereInput;
+}
+
+export interface CarCreateWithoutBody_typeInput {
+  trim?: CarTrimCreateOneWithoutCarsInput;
+  fuel_type?: CarFuelTypeCreateOneWithoutCarsInput;
+  year_from?: Int;
+  year_to?: Int;
+  zero_to_60?: Float;
+  no_of_doors?: Int;
+  no_of_seats?: Int;
+  power_ps?: Int;
+}
+
+export interface UserUpdateInput {
   name?: String;
+}
+
+export interface CarBodyTypeUpdateInput {
+  name?: String;
+  cars?: CarUpdateManyWithoutBody_typeInput;
+}
+
+export interface UserUpdateDataInput {
+  name?: String;
+}
+
+export interface CarUpdateManyWithoutBody_typeInput {
+  create?: CarCreateWithoutBody_typeInput[] | CarCreateWithoutBody_typeInput;
+  delete?: CarWhereUniqueInput[] | CarWhereUniqueInput;
+  connect?: CarWhereUniqueInput[] | CarWhereUniqueInput;
+  disconnect?: CarWhereUniqueInput[] | CarWhereUniqueInput;
+  update?:
+    | CarUpdateWithWhereUniqueWithoutBody_typeInput[]
+    | CarUpdateWithWhereUniqueWithoutBody_typeInput;
+  upsert?:
+    | CarUpsertWithWhereUniqueWithoutBody_typeInput[]
+    | CarUpsertWithWhereUniqueWithoutBody_typeInput;
+}
+
+export type CarMakeWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  name?: String;
+}>;
+
+export interface CarUpdateWithWhereUniqueWithoutBody_typeInput {
+  where: CarWhereUniqueInput;
+  data: CarUpdateWithoutBody_typeDataInput;
+}
+
+export interface CarTrimUpdateInput {
+  name?: String;
+  model?: CarModelUpdateOneRequiredWithoutTrimsInput;
   cars?: CarUpdateManyWithoutTrimInput;
 }
 
-export interface PostUpdateInput {
-  title?: String;
-  published?: Boolean;
-  author?: UserUpdateOneInput;
-}
-
-export interface CarMakeCreateInput {
-  name: String;
-  models?: CarModelCreateManyWithoutMakeInput;
-}
-
-export interface PostCreateInput {
-  title: String;
-  published?: Boolean;
-  author?: UserCreateOneInput;
-}
-
-export interface CarModelCreateManyWithoutMakeInput {
-  create?: CarModelCreateWithoutMakeInput[] | CarModelCreateWithoutMakeInput;
-  connect?: CarModelWhereUniqueInput[] | CarModelWhereUniqueInput;
-}
-
-export interface CarTrimCreateInput {
-  name: String;
-  model: CarModelCreateOneWithoutTrimsInput;
-  cars?: CarCreateManyWithoutTrimInput;
-}
-
-export interface CarModelCreateWithoutMakeInput {
-  name: String;
-  trims?: CarTrimCreateManyWithoutModelInput;
+export interface CarUpdateWithoutBody_typeDataInput {
+  trim?: CarTrimUpdateOneWithoutCarsInput;
+  fuel_type?: CarFuelTypeUpdateOneWithoutCarsInput;
+  year_from?: Int;
+  year_to?: Int;
+  zero_to_60?: Float;
+  no_of_doors?: Int;
+  no_of_seats?: Int;
+  power_ps?: Int;
 }
 
 export interface CarModelUpdateInput {
@@ -848,82 +1175,20 @@ export interface CarModelUpdateInput {
   trims?: CarTrimUpdateManyWithoutModelInput;
 }
 
-export interface CarTrimCreateManyWithoutModelInput {
-  create?: CarTrimCreateWithoutModelInput[] | CarTrimCreateWithoutModelInput;
-  connect?: CarTrimWhereUniqueInput[] | CarTrimWhereUniqueInput;
+export interface CarUpsertWithWhereUniqueWithoutBody_typeInput {
+  where: CarWhereUniqueInput;
+  update: CarUpdateWithoutBody_typeDataInput;
+  create: CarCreateWithoutBody_typeInput;
 }
 
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface CarTrimCreateWithoutModelInput {
-  name: String;
-  cars?: CarCreateManyWithoutTrimInput;
+export interface CarModelUpsertWithWhereUniqueWithoutMakeInput {
+  where: CarModelWhereUniqueInput;
+  update: CarModelUpdateWithoutMakeDataInput;
+  create: CarModelCreateWithoutMakeInput;
 }
 
-export interface CarMakeWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
+export interface CarBodyTypeUpdateManyMutationInput {
   name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  models_every?: CarModelWhereInput;
-  models_some?: CarModelWhereInput;
-  models_none?: CarModelWhereInput;
-  AND?: CarMakeWhereInput[] | CarMakeWhereInput;
-  OR?: CarMakeWhereInput[] | CarMakeWhereInput;
-  NOT?: CarMakeWhereInput[] | CarMakeWhereInput;
-}
-
-export interface CarCreateManyWithoutTrimInput {
-  create?: CarCreateWithoutTrimInput[] | CarCreateWithoutTrimInput;
-  connect?: CarWhereUniqueInput[] | CarWhereUniqueInput;
-}
-
-export type CarMakeWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  name?: String;
-}>;
-
-export interface CarCreateWithoutTrimInput {
-  zero_to_60?: Float;
-  no_of_doors?: Int;
-  no_of_seats?: Int;
-  power_ps?: Int;
-}
-
-export interface UserCreateOneInput {
-  create?: UserCreateInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface CarMakeUpdateInput {
-  name?: String;
-  models?: CarModelUpdateManyWithoutMakeInput;
 }
 
 export interface PostWhereInput {
@@ -963,6 +1228,29 @@ export interface PostWhereInput {
   NOT?: PostWhereInput[] | PostWhereInput;
 }
 
+export interface CarFuelTypeCreateInput {
+  name?: String;
+  cars?: CarCreateManyWithoutFuel_typeInput;
+}
+
+export interface CarUpdateManyWithoutTrimInput {
+  create?: CarCreateWithoutTrimInput[] | CarCreateWithoutTrimInput;
+  delete?: CarWhereUniqueInput[] | CarWhereUniqueInput;
+  connect?: CarWhereUniqueInput[] | CarWhereUniqueInput;
+  disconnect?: CarWhereUniqueInput[] | CarWhereUniqueInput;
+  update?:
+    | CarUpdateWithWhereUniqueWithoutTrimInput[]
+    | CarUpdateWithWhereUniqueWithoutTrimInput;
+  upsert?:
+    | CarUpsertWithWhereUniqueWithoutTrimInput[]
+    | CarUpsertWithWhereUniqueWithoutTrimInput;
+}
+
+export interface CarCreateManyWithoutFuel_typeInput {
+  create?: CarCreateWithoutFuel_typeInput[] | CarCreateWithoutFuel_typeInput;
+  connect?: CarWhereUniqueInput[] | CarWhereUniqueInput;
+}
+
 export interface CarTrimUpdateManyWithoutModelInput {
   create?: CarTrimCreateWithoutModelInput[] | CarTrimCreateWithoutModelInput;
   delete?: CarTrimWhereUniqueInput[] | CarTrimWhereUniqueInput;
@@ -976,9 +1264,197 @@ export interface CarTrimUpdateManyWithoutModelInput {
     | CarTrimUpsertWithWhereUniqueWithoutModelInput;
 }
 
-export interface CarModelUpdateWithoutMakeDataInput {
+export interface CarCreateWithoutFuel_typeInput {
+  trim?: CarTrimCreateOneWithoutCarsInput;
+  body_type?: CarBodyTypeCreateOneWithoutCarsInput;
+  year_from?: Int;
+  year_to?: Int;
+  zero_to_60?: Float;
+  no_of_doors?: Int;
+  no_of_seats?: Int;
+  power_ps?: Int;
+}
+
+export interface CarCreateInput {
+  trim?: CarTrimCreateOneWithoutCarsInput;
+  body_type?: CarBodyTypeCreateOneWithoutCarsInput;
+  fuel_type?: CarFuelTypeCreateOneWithoutCarsInput;
+  year_from?: Int;
+  year_to?: Int;
+  zero_to_60?: Float;
+  no_of_doors?: Int;
+  no_of_seats?: Int;
+  power_ps?: Int;
+}
+
+export interface CarFuelTypeUpdateInput {
   name?: String;
-  trims?: CarTrimUpdateManyWithoutModelInput;
+  cars?: CarUpdateManyWithoutFuel_typeInput;
+}
+
+export interface CarMakeWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  models_every?: CarModelWhereInput;
+  models_some?: CarModelWhereInput;
+  models_none?: CarModelWhereInput;
+  AND?: CarMakeWhereInput[] | CarMakeWhereInput;
+  OR?: CarMakeWhereInput[] | CarMakeWhereInput;
+  NOT?: CarMakeWhereInput[] | CarMakeWhereInput;
+}
+
+export interface CarUpdateManyWithoutFuel_typeInput {
+  create?: CarCreateWithoutFuel_typeInput[] | CarCreateWithoutFuel_typeInput;
+  delete?: CarWhereUniqueInput[] | CarWhereUniqueInput;
+  connect?: CarWhereUniqueInput[] | CarWhereUniqueInput;
+  disconnect?: CarWhereUniqueInput[] | CarWhereUniqueInput;
+  update?:
+    | CarUpdateWithWhereUniqueWithoutFuel_typeInput[]
+    | CarUpdateWithWhereUniqueWithoutFuel_typeInput;
+  upsert?:
+    | CarUpsertWithWhereUniqueWithoutFuel_typeInput[]
+    | CarUpsertWithWhereUniqueWithoutFuel_typeInput;
+}
+
+export type CarBodyTypeWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface CarUpdateWithWhereUniqueWithoutFuel_typeInput {
+  where: CarWhereUniqueInput;
+  data: CarUpdateWithoutFuel_typeDataInput;
+}
+
+export interface PostUpdateInput {
+  title?: String;
+  published?: Boolean;
+  author?: UserUpdateOneInput;
+}
+
+export interface CarUpdateWithoutFuel_typeDataInput {
+  trim?: CarTrimUpdateOneWithoutCarsInput;
+  body_type?: CarBodyTypeUpdateOneWithoutCarsInput;
+  year_from?: Int;
+  year_to?: Int;
+  zero_to_60?: Float;
+  no_of_doors?: Int;
+  no_of_seats?: Int;
+  power_ps?: Int;
+}
+
+export interface CarTrimCreateInput {
+  name: String;
+  model: CarModelCreateOneWithoutTrimsInput;
+  cars?: CarCreateManyWithoutTrimInput;
+}
+
+export interface CarUpsertWithWhereUniqueWithoutFuel_typeInput {
+  where: CarWhereUniqueInput;
+  update: CarUpdateWithoutFuel_typeDataInput;
+  create: CarCreateWithoutFuel_typeInput;
+}
+
+export interface CarTrimUpsertWithWhereUniqueWithoutModelInput {
+  where: CarTrimWhereUniqueInput;
+  update: CarTrimUpdateWithoutModelDataInput;
+  create: CarTrimCreateWithoutModelInput;
+}
+
+export interface CarFuelTypeUpdateManyMutationInput {
+  name?: String;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface CarMakeCreateInput {
+  name: String;
+  models?: CarModelCreateManyWithoutMakeInput;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: UserWhereInput;
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+}
+
+export interface CarModelCreateManyWithoutMakeInput {
+  create?: CarModelCreateWithoutMakeInput[] | CarModelCreateWithoutMakeInput;
+  connect?: CarModelWhereUniqueInput[] | CarModelWhereUniqueInput;
+}
+
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
+}
+
+export interface CarCreateManyWithoutTrimInput {
+  create?: CarCreateWithoutTrimInput[] | CarCreateWithoutTrimInput;
+  connect?: CarWhereUniqueInput[] | CarWhereUniqueInput;
+}
+
+export interface CarTrimCreateWithoutModelInput {
+  name: String;
+  cars?: CarCreateManyWithoutTrimInput;
+}
+
+export interface CarTrimCreateManyWithoutModelInput {
+  create?: CarTrimCreateWithoutModelInput[] | CarTrimCreateWithoutModelInput;
+  connect?: CarTrimWhereUniqueInput[] | CarTrimWhereUniqueInput;
+}
+
+export interface CarModelCreateWithoutMakeInput {
+  name: String;
+  trims?: CarTrimCreateManyWithoutModelInput;
+}
+
+export interface PostCreateInput {
+  title: String;
+  published?: Boolean;
+  author?: UserCreateOneInput;
+}
+
+export interface CarFuelTypeSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: CarFuelTypeWhereInput;
+  AND?: CarFuelTypeSubscriptionWhereInput[] | CarFuelTypeSubscriptionWhereInput;
+  OR?: CarFuelTypeSubscriptionWhereInput[] | CarFuelTypeSubscriptionWhereInput;
+  NOT?: CarFuelTypeSubscriptionWhereInput[] | CarFuelTypeSubscriptionWhereInput;
 }
 
 export interface CarModelUpdateWithWhereUniqueWithoutMakeInput {
@@ -986,57 +1462,62 @@ export interface CarModelUpdateWithWhereUniqueWithoutMakeInput {
   data: CarModelUpdateWithoutMakeDataInput;
 }
 
-export interface CarModelUpdateManyWithoutMakeInput {
-  create?: CarModelCreateWithoutMakeInput[] | CarModelCreateWithoutMakeInput;
-  delete?: CarModelWhereUniqueInput[] | CarModelWhereUniqueInput;
-  connect?: CarModelWhereUniqueInput[] | CarModelWhereUniqueInput;
-  disconnect?: CarModelWhereUniqueInput[] | CarModelWhereUniqueInput;
-  update?:
-    | CarModelUpdateWithWhereUniqueWithoutMakeInput[]
-    | CarModelUpdateWithWhereUniqueWithoutMakeInput;
-  upsert?:
-    | CarModelUpsertWithWhereUniqueWithoutMakeInput[]
-    | CarModelUpsertWithWhereUniqueWithoutMakeInput;
+export interface CarUpdateWithoutTrimDataInput {
+  body_type?: CarBodyTypeUpdateOneWithoutCarsInput;
+  fuel_type?: CarFuelTypeUpdateOneWithoutCarsInput;
+  year_from?: Int;
+  year_to?: Int;
+  zero_to_60?: Float;
+  no_of_doors?: Int;
+  no_of_seats?: Int;
+  power_ps?: Int;
 }
 
-export interface CarMakeUpdateManyMutationInput {
-  name?: String;
-}
-
-export interface CarTrimUpdateInput {
-  name?: String;
-  model?: CarModelUpdateOneRequiredWithoutTrimsInput;
-  cars?: CarUpdateManyWithoutTrimInput;
-}
-
-export interface UserUpdateOneInput {
-  create?: UserCreateInput;
-  update?: UserUpdateDataInput;
-  upsert?: UserUpsertNestedInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface CarMakeSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: CarMakeWhereInput;
-  AND?: CarMakeSubscriptionWhereInput[] | CarMakeSubscriptionWhereInput;
-  OR?: CarMakeSubscriptionWhereInput[] | CarMakeSubscriptionWhereInput;
-  NOT?: CarMakeSubscriptionWhereInput[] | CarMakeSubscriptionWhereInput;
-}
-
-export interface CarUpsertWithWhereUniqueWithoutTrimInput {
-  where: CarWhereUniqueInput;
-  update: CarUpdateWithoutTrimDataInput;
-  create: CarCreateWithoutTrimInput;
+export interface CarModelCreateInput {
+  name: String;
+  make: CarMakeCreateOneWithoutModelsInput;
+  trims?: CarTrimCreateManyWithoutModelInput;
 }
 
 export interface NodeNode {
   id: ID_Output;
+}
+
+export interface UserPreviousValues {
+  id: ID_Output;
+  name: String;
+}
+
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CarBodyTypeEdge {
+  cursor: String;
+}
+
+export interface CarBodyTypeEdgePromise
+  extends Promise<CarBodyTypeEdge>,
+    Fragmentable {
+  node: <T = CarBodyTypePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CarBodyTypeEdgeSubscription
+  extends Promise<AsyncIterator<CarBodyTypeEdge>>,
+    Fragmentable {
+  node: <T = CarBodyTypeSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface BatchPayload {
@@ -1053,6 +1534,423 @@ export interface BatchPayloadSubscription
   extends Promise<AsyncIterator<BatchPayload>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface CarBodyTypeConnection {}
+
+export interface CarBodyTypeConnectionPromise
+  extends Promise<CarBodyTypeConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CarBodyTypeEdge>>() => T;
+  aggregate: <T = AggregateCarBodyTypePromise>() => T;
+}
+
+export interface CarBodyTypeConnectionSubscription
+  extends Promise<AsyncIterator<CarBodyTypeConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CarBodyTypeEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCarBodyTypeSubscription>() => T;
+}
+
+export interface AggregateUser {
+  count: Int;
+}
+
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AggregateCar {
+  count: Int;
+}
+
+export interface AggregateCarPromise
+  extends Promise<AggregateCar>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCarSubscription
+  extends Promise<AsyncIterator<AggregateCar>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserConnection {}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
+}
+
+export interface CarEdge {
+  cursor: String;
+}
+
+export interface CarEdgePromise extends Promise<CarEdge>, Fragmentable {
+  node: <T = CarPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CarEdgeSubscription
+  extends Promise<AsyncIterator<CarEdge>>,
+    Fragmentable {
+  node: <T = CarSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregatePost {
+  count: Int;
+}
+
+export interface AggregatePostPromise
+  extends Promise<AggregatePost>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregatePostSubscription
+  extends Promise<AsyncIterator<AggregatePost>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface Car {
+  id: ID_Output;
+  year_from?: Int;
+  year_to?: Int;
+  zero_to_60?: Float;
+  no_of_doors?: Int;
+  no_of_seats?: Int;
+  power_ps?: Int;
+}
+
+export interface CarPromise extends Promise<Car>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  trim: <T = CarTrimPromise>() => T;
+  body_type: <T = CarBodyTypePromise>() => T;
+  fuel_type: <T = CarFuelTypePromise>() => T;
+  year_from: () => Promise<Int>;
+  year_to: () => Promise<Int>;
+  zero_to_60: () => Promise<Float>;
+  no_of_doors: () => Promise<Int>;
+  no_of_seats: () => Promise<Int>;
+  power_ps: () => Promise<Int>;
+}
+
+export interface CarSubscription
+  extends Promise<AsyncIterator<Car>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  trim: <T = CarTrimSubscription>() => T;
+  body_type: <T = CarBodyTypeSubscription>() => T;
+  fuel_type: <T = CarFuelTypeSubscription>() => T;
+  year_from: () => Promise<AsyncIterator<Int>>;
+  year_to: () => Promise<AsyncIterator<Int>>;
+  zero_to_60: () => Promise<AsyncIterator<Float>>;
+  no_of_doors: () => Promise<AsyncIterator<Int>>;
+  no_of_seats: () => Promise<AsyncIterator<Int>>;
+  power_ps: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface PostConnection {}
+
+export interface PostConnectionPromise
+  extends Promise<PostConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<PostEdge>>() => T;
+  aggregate: <T = AggregatePostPromise>() => T;
+}
+
+export interface PostConnectionSubscription
+  extends Promise<AsyncIterator<PostConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PostEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePostSubscription>() => T;
+}
+
+export interface CarSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface CarSubscriptionPayloadPromise
+  extends Promise<CarSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CarPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CarPreviousValuesPromise>() => T;
+}
+
+export interface CarSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CarSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CarSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CarPreviousValuesSubscription>() => T;
+}
+
+export interface User {
+  id: ID_Output;
+  name: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CarPreviousValues {
+  id: ID_Output;
+  year_from?: Int;
+  year_to?: Int;
+  zero_to_60?: Float;
+  no_of_doors?: Int;
+  no_of_seats?: Int;
+  power_ps?: Int;
+}
+
+export interface CarPreviousValuesPromise
+  extends Promise<CarPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  year_from: () => Promise<Int>;
+  year_to: () => Promise<Int>;
+  zero_to_60: () => Promise<Float>;
+  no_of_doors: () => Promise<Int>;
+  no_of_seats: () => Promise<Int>;
+  power_ps: () => Promise<Int>;
+}
+
+export interface CarPreviousValuesSubscription
+  extends Promise<AsyncIterator<CarPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  year_from: () => Promise<AsyncIterator<Int>>;
+  year_to: () => Promise<AsyncIterator<Int>>;
+  zero_to_60: () => Promise<AsyncIterator<Float>>;
+  no_of_doors: () => Promise<AsyncIterator<Int>>;
+  no_of_seats: () => Promise<AsyncIterator<Int>>;
+  power_ps: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AggregateCarTrim {
+  count: Int;
+}
+
+export interface AggregateCarTrimPromise
+  extends Promise<AggregateCarTrim>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCarTrimSubscription
+  extends Promise<AsyncIterator<AggregateCarTrim>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface Post {
+  id: ID_Output;
+  title: String;
+  published: Boolean;
+}
+
+export interface PostPromise extends Promise<Post>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  published: () => Promise<Boolean>;
+  author: <T = UserPromise>() => T;
+}
+
+export interface PostSubscription
+  extends Promise<AsyncIterator<Post>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  title: () => Promise<AsyncIterator<String>>;
+  published: () => Promise<AsyncIterator<Boolean>>;
+  author: <T = UserSubscription>() => T;
+}
+
+export interface PostSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface PostSubscriptionPayloadPromise
+  extends Promise<PostSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = PostPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = PostPreviousValuesPromise>() => T;
+}
+
+export interface PostSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<PostSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = PostSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = PostPreviousValuesSubscription>() => T;
+}
+
+export interface CarTrimEdge {
+  cursor: String;
+}
+
+export interface CarTrimEdgePromise extends Promise<CarTrimEdge>, Fragmentable {
+  node: <T = CarTrimPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CarTrimEdgeSubscription
+  extends Promise<AsyncIterator<CarTrimEdge>>,
+    Fragmentable {
+  node: <T = CarTrimSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CarTrimConnection {}
+
+export interface CarTrimConnectionPromise
+  extends Promise<CarTrimConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CarTrimEdge>>() => T;
+  aggregate: <T = AggregateCarTrimPromise>() => T;
+}
+
+export interface CarTrimConnectionSubscription
+  extends Promise<AsyncIterator<CarTrimConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CarTrimEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCarTrimSubscription>() => T;
+}
+
+export interface AggregateCarModel {
+  count: Int;
+}
+
+export interface AggregateCarModelPromise
+  extends Promise<AggregateCarModel>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCarModelSubscription
+  extends Promise<AsyncIterator<AggregateCarModel>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface CarModelConnection {}
+
+export interface CarModelConnectionPromise
+  extends Promise<CarModelConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CarModelEdge>>() => T;
+  aggregate: <T = AggregateCarModelPromise>() => T;
+}
+
+export interface CarModelConnectionSubscription
+  extends Promise<AsyncIterator<CarModelConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CarModelEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCarModelSubscription>() => T;
+}
+
+export interface CarBodyTypeSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface CarBodyTypeSubscriptionPayloadPromise
+  extends Promise<CarBodyTypeSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CarBodyTypePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CarBodyTypePreviousValuesPromise>() => T;
+}
+
+export interface CarBodyTypeSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CarBodyTypeSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CarBodyTypeSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CarBodyTypePreviousValuesSubscription>() => T;
+}
+
+export interface CarMakeEdge {
+  cursor: String;
+}
+
+export interface CarMakeEdgePromise extends Promise<CarMakeEdge>, Fragmentable {
+  node: <T = CarMakePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CarMakeEdgeSubscription
+  extends Promise<AsyncIterator<CarMakeEdge>>,
+    Fragmentable {
+  node: <T = CarMakeSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CarBodyTypePreviousValues {
+  id: ID_Output;
+  name?: String;
+}
+
+export interface CarBodyTypePreviousValuesPromise
+  extends Promise<CarBodyTypePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface CarBodyTypePreviousValuesSubscription
+  extends Promise<AsyncIterator<CarBodyTypePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
 }
 
 export interface CarModel {
@@ -1096,128 +1994,167 @@ export interface CarModelSubscription
   ) => T;
 }
 
-export interface UserPreviousValues {
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
+
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CarFuelTypeEdge {
+  cursor: String;
+}
+
+export interface CarFuelTypeEdgePromise
+  extends Promise<CarFuelTypeEdge>,
+    Fragmentable {
+  node: <T = CarFuelTypePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CarFuelTypeEdgeSubscription
+  extends Promise<AsyncIterator<CarFuelTypeEdge>>,
+    Fragmentable {
+  node: <T = CarFuelTypeSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CarFuelTypeSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface CarFuelTypeSubscriptionPayloadPromise
+  extends Promise<CarFuelTypeSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CarFuelTypePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CarFuelTypePreviousValuesPromise>() => T;
+}
+
+export interface CarFuelTypeSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CarFuelTypeSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CarFuelTypeSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CarFuelTypePreviousValuesSubscription>() => T;
+}
+
+export interface CarMake {
   id: ID_Output;
   name: String;
 }
 
-export interface UserPreviousValuesPromise
-  extends Promise<UserPreviousValues>,
+export interface CarMakePromise extends Promise<CarMake>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  models: <T = FragmentableArray<CarModel>>(
+    args?: {
+      where?: CarModelWhereInput;
+      orderBy?: CarModelOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface CarMakeSubscription
+  extends Promise<AsyncIterator<CarMake>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  models: <T = Promise<AsyncIterator<CarModelSubscription>>>(
+    args?: {
+      where?: CarModelWhereInput;
+      orderBy?: CarModelOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface CarFuelTypePreviousValues {
+  id: ID_Output;
+  name?: String;
+}
+
+export interface CarFuelTypePreviousValuesPromise
+  extends Promise<CarFuelTypePreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
 }
 
-export interface UserPreviousValuesSubscription
-  extends Promise<AsyncIterator<UserPreviousValues>>,
+export interface CarFuelTypePreviousValuesSubscription
+  extends Promise<AsyncIterator<CarFuelTypePreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateCar {
-  count: Int;
-}
-
-export interface AggregateCarPromise
-  extends Promise<AggregateCar>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateCarSubscription
-  extends Promise<AsyncIterator<AggregateCar>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface AggregateUser {
-  count: Int;
-}
-
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface CarEdge {
-  cursor: String;
-}
-
-export interface CarEdgePromise extends Promise<CarEdge>, Fragmentable {
-  node: <T = CarPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface CarEdgeSubscription
-  extends Promise<AsyncIterator<CarEdge>>,
-    Fragmentable {
-  node: <T = CarSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface UserConnection {}
-
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
-}
-
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
-}
-
-export interface UserEdge {
-  cursor: String;
-}
-
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
-    Fragmentable {
-  node: <T = UserSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface PostSubscriptionPayload {
+export interface UserSubscriptionPayload {
   mutation: MutationType;
   updatedFields?: String[];
 }
 
-export interface PostSubscriptionPayloadPromise
-  extends Promise<PostSubscriptionPayload>,
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = PostPromise>() => T;
+  node: <T = UserPromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = PostPreviousValuesPromise>() => T;
+  previousValues: <T = UserPreviousValuesPromise>() => T;
 }
 
-export interface PostSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<PostSubscriptionPayload>>,
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = PostSubscription>() => T;
+  node: <T = UserSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = PostPreviousValuesSubscription>() => T;
+  previousValues: <T = UserPreviousValuesSubscription>() => T;
+}
+
+export interface CarConnection {}
+
+export interface CarConnectionPromise
+  extends Promise<CarConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CarEdge>>() => T;
+  aggregate: <T = AggregateCarPromise>() => T;
+}
+
+export interface CarConnectionSubscription
+  extends Promise<AsyncIterator<CarConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CarEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCarSubscription>() => T;
 }
 
 export interface CarTrim {
@@ -1261,235 +2198,6 @@ export interface CarTrimSubscription
   ) => T;
 }
 
-export interface AggregatePost {
-  count: Int;
-}
-
-export interface AggregatePostPromise
-  extends Promise<AggregatePost>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregatePostSubscription
-  extends Promise<AsyncIterator<AggregatePost>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface PostEdge {
-  cursor: String;
-}
-
-export interface PostEdgePromise extends Promise<PostEdge>, Fragmentable {
-  node: <T = PostPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface PostEdgeSubscription
-  extends Promise<AsyncIterator<PostEdge>>,
-    Fragmentable {
-  node: <T = PostSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface UserSubscriptionPayload {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface UserSubscriptionPayloadPromise
-  extends Promise<UserSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = UserPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = UserPreviousValuesPromise>() => T;
-}
-
-export interface UserSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = UserSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = UserPreviousValuesSubscription>() => T;
-}
-
-export interface Car {
-  id: ID_Output;
-  zero_to_60?: Float;
-  no_of_doors?: Int;
-  no_of_seats?: Int;
-  power_ps?: Int;
-}
-
-export interface CarPromise extends Promise<Car>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  trim: <T = CarTrimPromise>() => T;
-  zero_to_60: () => Promise<Float>;
-  no_of_doors: () => Promise<Int>;
-  no_of_seats: () => Promise<Int>;
-  power_ps: () => Promise<Int>;
-}
-
-export interface CarSubscription
-  extends Promise<AsyncIterator<Car>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  trim: <T = CarTrimSubscription>() => T;
-  zero_to_60: () => Promise<AsyncIterator<Float>>;
-  no_of_doors: () => Promise<AsyncIterator<Int>>;
-  no_of_seats: () => Promise<AsyncIterator<Int>>;
-  power_ps: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface Post {
-  id: ID_Output;
-  title: String;
-  published: Boolean;
-}
-
-export interface PostPromise extends Promise<Post>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  title: () => Promise<String>;
-  published: () => Promise<Boolean>;
-  author: <T = UserPromise>() => T;
-}
-
-export interface PostSubscription
-  extends Promise<AsyncIterator<Post>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  title: () => Promise<AsyncIterator<String>>;
-  published: () => Promise<AsyncIterator<Boolean>>;
-  author: <T = UserSubscription>() => T;
-}
-
-export interface CarSubscriptionPayload {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface CarSubscriptionPayloadPromise
-  extends Promise<CarSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = CarPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = CarPreviousValuesPromise>() => T;
-}
-
-export interface CarSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<CarSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = CarSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = CarPreviousValuesSubscription>() => T;
-}
-
-export interface CarTrimEdge {
-  cursor: String;
-}
-
-export interface CarTrimEdgePromise extends Promise<CarTrimEdge>, Fragmentable {
-  node: <T = CarTrimPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface CarTrimEdgeSubscription
-  extends Promise<AsyncIterator<CarTrimEdge>>,
-    Fragmentable {
-  node: <T = CarTrimSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface CarPreviousValues {
-  id: ID_Output;
-  zero_to_60?: Float;
-  no_of_doors?: Int;
-  no_of_seats?: Int;
-  power_ps?: Int;
-}
-
-export interface CarPreviousValuesPromise
-  extends Promise<CarPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  zero_to_60: () => Promise<Float>;
-  no_of_doors: () => Promise<Int>;
-  no_of_seats: () => Promise<Int>;
-  power_ps: () => Promise<Int>;
-}
-
-export interface CarPreviousValuesSubscription
-  extends Promise<AsyncIterator<CarPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  zero_to_60: () => Promise<AsyncIterator<Float>>;
-  no_of_doors: () => Promise<AsyncIterator<Int>>;
-  no_of_seats: () => Promise<AsyncIterator<Int>>;
-  power_ps: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface AggregateCarModel {
-  count: Int;
-}
-
-export interface AggregateCarModelPromise
-  extends Promise<AggregateCarModel>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateCarModelSubscription
-  extends Promise<AsyncIterator<AggregateCarModel>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
-}
-
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
-    Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface CarModelConnection {}
-
-export interface CarModelConnectionPromise
-  extends Promise<CarModelConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<CarModelEdge>>() => T;
-  aggregate: <T = AggregateCarModelPromise>() => T;
-}
-
-export interface CarModelConnectionSubscription
-  extends Promise<AsyncIterator<CarModelConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<CarModelEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateCarModelSubscription>() => T;
-}
-
 export interface CarMakeSubscriptionPayload {
   mutation: MutationType;
   updatedFields?: String[];
@@ -1511,41 +2219,6 @@ export interface CarMakeSubscriptionPayloadSubscription
   node: <T = CarMakeSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
   previousValues: <T = CarMakePreviousValuesSubscription>() => T;
-}
-
-export interface CarMakeEdge {
-  cursor: String;
-}
-
-export interface CarMakeEdgePromise extends Promise<CarMakeEdge>, Fragmentable {
-  node: <T = CarMakePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface CarMakeEdgeSubscription
-  extends Promise<AsyncIterator<CarMakeEdge>>,
-    Fragmentable {
-  node: <T = CarMakeSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface CarMakePreviousValues {
-  id: ID_Output;
-  name: String;
-}
-
-export interface CarMakePreviousValuesPromise
-  extends Promise<CarMakePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface CarMakePreviousValuesSubscription
-  extends Promise<AsyncIterator<CarMakePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
 }
 
 export interface PostPreviousValues {
@@ -1570,39 +2243,94 @@ export interface PostPreviousValuesSubscription
   published: () => Promise<AsyncIterator<Boolean>>;
 }
 
-export interface CarConnection {}
-
-export interface CarConnectionPromise
-  extends Promise<CarConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<CarEdge>>() => T;
-  aggregate: <T = AggregateCarPromise>() => T;
-}
-
-export interface CarConnectionSubscription
-  extends Promise<AsyncIterator<CarConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<CarEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateCarSubscription>() => T;
-}
-
-export interface User {
+export interface CarMakePreviousValues {
   id: ID_Output;
   name: String;
 }
 
-export interface UserPromise extends Promise<User>, Fragmentable {
+export interface CarMakePreviousValuesPromise
+  extends Promise<CarMakePreviousValues>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
 }
 
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
+export interface CarMakePreviousValuesSubscription
+  extends Promise<AsyncIterator<CarMakePreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateCarMake {
+  count: Int;
+}
+
+export interface AggregateCarMakePromise
+  extends Promise<AggregateCarMake>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCarMakeSubscription
+  extends Promise<AsyncIterator<AggregateCarMake>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface CarFuelType {
+  id: ID_Output;
+  name?: String;
+}
+
+export interface CarFuelTypePromise extends Promise<CarFuelType>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  cars: <T = FragmentableArray<Car>>(
+    args?: {
+      where?: CarWhereInput;
+      orderBy?: CarOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface CarFuelTypeSubscription
+  extends Promise<AsyncIterator<CarFuelType>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  cars: <T = Promise<AsyncIterator<CarSubscription>>>(
+    args?: {
+      where?: CarWhereInput;
+      orderBy?: CarOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface AggregateCarFuelType {
+  count: Int;
+}
+
+export interface AggregateCarFuelTypePromise
+  extends Promise<AggregateCarFuelType>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCarFuelTypeSubscription
+  extends Promise<AsyncIterator<AggregateCarFuelType>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface CarModelSubscriptionPayload {
@@ -1628,38 +2356,36 @@ export interface CarModelSubscriptionPayloadSubscription
   previousValues: <T = CarModelPreviousValuesSubscription>() => T;
 }
 
-export interface CarTrimConnection {}
-
-export interface CarTrimConnectionPromise
-  extends Promise<CarTrimConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<CarTrimEdge>>() => T;
-  aggregate: <T = AggregateCarTrimPromise>() => T;
-}
-
-export interface CarTrimConnectionSubscription
-  extends Promise<AsyncIterator<CarTrimConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<CarTrimEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateCarTrimSubscription>() => T;
-}
-
-export interface AggregateCarMake {
+export interface AggregateCarBodyType {
   count: Int;
 }
 
-export interface AggregateCarMakePromise
-  extends Promise<AggregateCarMake>,
+export interface AggregateCarBodyTypePromise
+  extends Promise<AggregateCarBodyType>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateCarMakeSubscription
-  extends Promise<AsyncIterator<AggregateCarMake>>,
+export interface AggregateCarBodyTypeSubscription
+  extends Promise<AsyncIterator<AggregateCarBodyType>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface PostEdge {
+  cursor: String;
+}
+
+export interface PostEdgePromise extends Promise<PostEdge>, Fragmentable {
+  node: <T = PostPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface PostEdgeSubscription
+  extends Promise<AsyncIterator<PostEdge>>,
+    Fragmentable {
+  node: <T = PostSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface CarTrimPreviousValues {
@@ -1704,18 +2430,18 @@ export interface CarTrimSubscriptionPayloadSubscription
   previousValues: <T = CarTrimPreviousValuesSubscription>() => T;
 }
 
-export interface CarMake {
+export interface CarBodyType {
   id: ID_Output;
-  name: String;
+  name?: String;
 }
 
-export interface CarMakePromise extends Promise<CarMake>, Fragmentable {
+export interface CarBodyTypePromise extends Promise<CarBodyType>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
-  models: <T = FragmentableArray<CarModel>>(
+  cars: <T = FragmentableArray<Car>>(
     args?: {
-      where?: CarModelWhereInput;
-      orderBy?: CarModelOrderByInput;
+      where?: CarWhereInput;
+      orderBy?: CarOrderByInput;
       skip?: Int;
       after?: String;
       before?: String;
@@ -1725,15 +2451,15 @@ export interface CarMakePromise extends Promise<CarMake>, Fragmentable {
   ) => T;
 }
 
-export interface CarMakeSubscription
-  extends Promise<AsyncIterator<CarMake>>,
+export interface CarBodyTypeSubscription
+  extends Promise<AsyncIterator<CarBodyType>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
-  models: <T = Promise<AsyncIterator<CarModelSubscription>>>(
+  cars: <T = Promise<AsyncIterator<CarSubscription>>>(
     args?: {
-      where?: CarModelWhereInput;
-      orderBy?: CarModelOrderByInput;
+      where?: CarWhereInput;
+      orderBy?: CarOrderByInput;
       skip?: Int;
       after?: String;
       before?: String;
@@ -1762,24 +2488,6 @@ export interface CarModelPreviousValuesSubscription
   name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface CarMakeConnection {}
-
-export interface CarMakeConnectionPromise
-  extends Promise<CarMakeConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<CarMakeEdge>>() => T;
-  aggregate: <T = AggregateCarMakePromise>() => T;
-}
-
-export interface CarMakeConnectionSubscription
-  extends Promise<AsyncIterator<CarMakeConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<CarMakeEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateCarMakeSubscription>() => T;
-}
-
 export interface CarModelEdge {
   cursor: String;
 }
@@ -1798,38 +2506,56 @@ export interface CarModelEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateCarTrim {
-  count: Int;
+export interface UserEdge {
+  cursor: String;
 }
 
-export interface AggregateCarTrimPromise
-  extends Promise<AggregateCarTrim>,
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
     Fragmentable {
-  count: () => Promise<Int>;
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateCarTrimSubscription
-  extends Promise<AsyncIterator<AggregateCarTrim>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
+export interface CarFuelTypeConnection {}
 
-export interface PostConnection {}
-
-export interface PostConnectionPromise
-  extends Promise<PostConnection>,
+export interface CarFuelTypeConnectionPromise
+  extends Promise<CarFuelTypeConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<PostEdge>>() => T;
-  aggregate: <T = AggregatePostPromise>() => T;
+  edges: <T = FragmentableArray<CarFuelTypeEdge>>() => T;
+  aggregate: <T = AggregateCarFuelTypePromise>() => T;
 }
 
-export interface PostConnectionSubscription
-  extends Promise<AsyncIterator<PostConnection>>,
+export interface CarFuelTypeConnectionSubscription
+  extends Promise<AsyncIterator<CarFuelTypeConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<PostEdgeSubscription>>>() => T;
-  aggregate: <T = AggregatePostSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CarFuelTypeEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCarFuelTypeSubscription>() => T;
+}
+
+export interface CarMakeConnection {}
+
+export interface CarMakeConnectionPromise
+  extends Promise<CarMakeConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CarMakeEdge>>() => T;
+  aggregate: <T = AggregateCarMakePromise>() => T;
+}
+
+export interface CarMakeConnectionSubscription
+  extends Promise<AsyncIterator<CarMakeConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CarMakeEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCarMakeSubscription>() => T;
 }
 
 /*
@@ -1838,16 +2564,6 @@ The `Boolean` scalar type represents `true` or `false`.
 export type Boolean = boolean;
 
 export type Long = string;
-
-/*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
-
-/*
-The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). 
-*/
-export type Float = number;
 
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
@@ -1860,6 +2576,16 @@ The `Int` scalar type represents non-fractional signed whole numeric values. Int
 */
 export type Int = number;
 
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
+
+/*
+The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). 
+*/
+export type Float = number;
+
 /**
  * Model Metadata
  */
@@ -1867,6 +2593,14 @@ export type Int = number;
 export const models = [
   {
     name: "Car",
+    embedded: false
+  },
+  {
+    name: "CarBodyType",
+    embedded: false
+  },
+  {
+    name: "CarFuelType",
     embedded: false
   },
   {

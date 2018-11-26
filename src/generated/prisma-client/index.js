@@ -9,6 +9,14 @@ var models = [
     embedded: false
   },
   {
+    name: "CarBodyType",
+    embedded: false
+  },
+  {
+    name: "CarFuelType",
+    embedded: false
+  },
+  {
     name: "CarMake",
     embedded: false
   },

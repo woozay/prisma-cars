@@ -30,9 +30,25 @@ type CarTrim {
   cars: [Car!]!
 }
 
+type CarBodyType {
+  id: ID! @unique
+  name: String
+  cars: [Car!]!
+}
+
+type CarFuelType {
+  id: ID! @unique
+  name: String
+  cars: [Car!]!
+}
+
 type Car {
   id: ID! @unique
   trim: CarTrim
+  body_type: CarBodyType
+  fuel_type: CarFuelType
+  year_from: Int
+  year_to: Int
   zero_to_60: Float
   no_of_doors: Int
   no_of_seats: Int

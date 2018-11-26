@@ -5,5 +5,16 @@ type Query {
 }
 
 type Mutation {
-  addCar(make: String, model: String, trim: String, zero_to_60: String, no_of_doors: String, no_of_seats: String, power_ps: Int): CarMake
+  addCar(
+    make: String,
+    model: String,
+    trim: String,
+    body_type: String,
+    fuel_type: String,
+    year_from: Int,
+    year_to: Int,
+    zero_to_60: String,
+    no_of_doors: String,
+    no_of_seats: String,
+    power_ps: Int): CarMake
 }

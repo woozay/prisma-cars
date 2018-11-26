@@ -3,6 +3,14 @@ module.exports = {
   count: Int!
 }
 
+type AggregateCarBodyType {
+  count: Int!
+}
+
+type AggregateCarFuelType {
+  count: Int!
+}
+
 type AggregateCarMake {
   count: Int!
 }
@@ -30,10 +38,147 @@ type BatchPayload {
 type Car {
   id: ID!
   trim: CarTrim
+  body_type: CarBodyType
+  fuel_type: CarFuelType
+  year_from: Int
+  year_to: Int
   zero_to_60: Float
   no_of_doors: Int
   no_of_seats: Int
   power_ps: Int
+}
+
+type CarBodyType {
+  id: ID!
+  name: String
+  cars(where: CarWhereInput, orderBy: CarOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Car!]
+}
+
+type CarBodyTypeConnection {
+  pageInfo: PageInfo!
+  edges: [CarBodyTypeEdge]!
+  aggregate: AggregateCarBodyType!
+}
+
+input CarBodyTypeCreateInput {
+  name: String
+  cars: CarCreateManyWithoutBody_typeInput
+}
+
+input CarBodyTypeCreateOneWithoutCarsInput {
+  create: CarBodyTypeCreateWithoutCarsInput
+  connect: CarBodyTypeWhereUniqueInput
+}
+
+input CarBodyTypeCreateWithoutCarsInput {
+  name: String
+}
+
+type CarBodyTypeEdge {
+  node: CarBodyType!
+  cursor: String!
+}
+
+enum CarBodyTypeOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type CarBodyTypePreviousValues {
+  id: ID!
+  name: String
+}
+
+type CarBodyTypeSubscriptionPayload {
+  mutation: MutationType!
+  node: CarBodyType
+  updatedFields: [String!]
+  previousValues: CarBodyTypePreviousValues
+}
+
+input CarBodyTypeSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CarBodyTypeWhereInput
+  AND: [CarBodyTypeSubscriptionWhereInput!]
+  OR: [CarBodyTypeSubscriptionWhereInput!]
+  NOT: [CarBodyTypeSubscriptionWhereInput!]
+}
+
+input CarBodyTypeUpdateInput {
+  name: String
+  cars: CarUpdateManyWithoutBody_typeInput
+}
+
+input CarBodyTypeUpdateManyMutationInput {
+  name: String
+}
+
+input CarBodyTypeUpdateOneWithoutCarsInput {
+  create: CarBodyTypeCreateWithoutCarsInput
+  update: CarBodyTypeUpdateWithoutCarsDataInput
+  upsert: CarBodyTypeUpsertWithoutCarsInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: CarBodyTypeWhereUniqueInput
+}
+
+input CarBodyTypeUpdateWithoutCarsDataInput {
+  name: String
+}
+
+input CarBodyTypeUpsertWithoutCarsInput {
+  update: CarBodyTypeUpdateWithoutCarsDataInput!
+  create: CarBodyTypeCreateWithoutCarsInput!
+}
+
+input CarBodyTypeWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  cars_every: CarWhereInput
+  cars_some: CarWhereInput
+  cars_none: CarWhereInput
+  AND: [CarBodyTypeWhereInput!]
+  OR: [CarBodyTypeWhereInput!]
+  NOT: [CarBodyTypeWhereInput!]
+}
+
+input CarBodyTypeWhereUniqueInput {
+  id: ID
 }
 
 type CarConnection {
@@ -44,10 +189,24 @@ type CarConnection {
 
 input CarCreateInput {
   trim: CarTrimCreateOneWithoutCarsInput
+  body_type: CarBodyTypeCreateOneWithoutCarsInput
+  fuel_type: CarFuelTypeCreateOneWithoutCarsInput
+  year_from: Int
+  year_to: Int
   zero_to_60: Float
   no_of_doors: Int
   no_of_seats: Int
   power_ps: Int
+}
+
+input CarCreateManyWithoutBody_typeInput {
+  create: [CarCreateWithoutBody_typeInput!]
+  connect: [CarWhereUniqueInput!]
+}
+
+input CarCreateManyWithoutFuel_typeInput {
+  create: [CarCreateWithoutFuel_typeInput!]
+  connect: [CarWhereUniqueInput!]
 }
 
 input CarCreateManyWithoutTrimInput {
@@ -55,7 +214,33 @@ input CarCreateManyWithoutTrimInput {
   connect: [CarWhereUniqueInput!]
 }
 
+input CarCreateWithoutBody_typeInput {
+  trim: CarTrimCreateOneWithoutCarsInput
+  fuel_type: CarFuelTypeCreateOneWithoutCarsInput
+  year_from: Int
+  year_to: Int
+  zero_to_60: Float
+  no_of_doors: Int
+  no_of_seats: Int
+  power_ps: Int
+}
+
+input CarCreateWithoutFuel_typeInput {
+  trim: CarTrimCreateOneWithoutCarsInput
+  body_type: CarBodyTypeCreateOneWithoutCarsInput
+  year_from: Int
+  year_to: Int
+  zero_to_60: Float
+  no_of_doors: Int
+  no_of_seats: Int
+  power_ps: Int
+}
+
 input CarCreateWithoutTrimInput {
+  body_type: CarBodyTypeCreateOneWithoutCarsInput
+  fuel_type: CarFuelTypeCreateOneWithoutCarsInput
+  year_from: Int
+  year_to: Int
   zero_to_60: Float
   no_of_doors: Int
   no_of_seats: Int
@@ -65,6 +250,139 @@ input CarCreateWithoutTrimInput {
 type CarEdge {
   node: Car!
   cursor: String!
+}
+
+type CarFuelType {
+  id: ID!
+  name: String
+  cars(where: CarWhereInput, orderBy: CarOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Car!]
+}
+
+type CarFuelTypeConnection {
+  pageInfo: PageInfo!
+  edges: [CarFuelTypeEdge]!
+  aggregate: AggregateCarFuelType!
+}
+
+input CarFuelTypeCreateInput {
+  name: String
+  cars: CarCreateManyWithoutFuel_typeInput
+}
+
+input CarFuelTypeCreateOneWithoutCarsInput {
+  create: CarFuelTypeCreateWithoutCarsInput
+  connect: CarFuelTypeWhereUniqueInput
+}
+
+input CarFuelTypeCreateWithoutCarsInput {
+  name: String
+}
+
+type CarFuelTypeEdge {
+  node: CarFuelType!
+  cursor: String!
+}
+
+enum CarFuelTypeOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type CarFuelTypePreviousValues {
+  id: ID!
+  name: String
+}
+
+type CarFuelTypeSubscriptionPayload {
+  mutation: MutationType!
+  node: CarFuelType
+  updatedFields: [String!]
+  previousValues: CarFuelTypePreviousValues
+}
+
+input CarFuelTypeSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CarFuelTypeWhereInput
+  AND: [CarFuelTypeSubscriptionWhereInput!]
+  OR: [CarFuelTypeSubscriptionWhereInput!]
+  NOT: [CarFuelTypeSubscriptionWhereInput!]
+}
+
+input CarFuelTypeUpdateInput {
+  name: String
+  cars: CarUpdateManyWithoutFuel_typeInput
+}
+
+input CarFuelTypeUpdateManyMutationInput {
+  name: String
+}
+
+input CarFuelTypeUpdateOneWithoutCarsInput {
+  create: CarFuelTypeCreateWithoutCarsInput
+  update: CarFuelTypeUpdateWithoutCarsDataInput
+  upsert: CarFuelTypeUpsertWithoutCarsInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: CarFuelTypeWhereUniqueInput
+}
+
+input CarFuelTypeUpdateWithoutCarsDataInput {
+  name: String
+}
+
+input CarFuelTypeUpsertWithoutCarsInput {
+  update: CarFuelTypeUpdateWithoutCarsDataInput!
+  create: CarFuelTypeCreateWithoutCarsInput!
+}
+
+input CarFuelTypeWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  cars_every: CarWhereInput
+  cars_some: CarWhereInput
+  cars_none: CarWhereInput
+  AND: [CarFuelTypeWhereInput!]
+  OR: [CarFuelTypeWhereInput!]
+  NOT: [CarFuelTypeWhereInput!]
+}
+
+input CarFuelTypeWhereUniqueInput {
+  id: ID
 }
 
 type CarMake {
@@ -374,6 +692,10 @@ input CarModelWhereUniqueInput {
 enum CarOrderByInput {
   id_ASC
   id_DESC
+  year_from_ASC
+  year_from_DESC
+  year_to_ASC
+  year_to_DESC
   zero_to_60_ASC
   zero_to_60_DESC
   no_of_doors_ASC
@@ -390,6 +712,8 @@ enum CarOrderByInput {
 
 type CarPreviousValues {
   id: ID!
+  year_from: Int
+  year_to: Int
   zero_to_60: Float
   no_of_doors: Int
   no_of_seats: Int
@@ -590,6 +914,10 @@ input CarTrimWhereUniqueInput {
 
 input CarUpdateInput {
   trim: CarTrimUpdateOneWithoutCarsInput
+  body_type: CarBodyTypeUpdateOneWithoutCarsInput
+  fuel_type: CarFuelTypeUpdateOneWithoutCarsInput
+  year_from: Int
+  year_to: Int
   zero_to_60: Float
   no_of_doors: Int
   no_of_seats: Int
@@ -597,10 +925,30 @@ input CarUpdateInput {
 }
 
 input CarUpdateManyMutationInput {
+  year_from: Int
+  year_to: Int
   zero_to_60: Float
   no_of_doors: Int
   no_of_seats: Int
   power_ps: Int
+}
+
+input CarUpdateManyWithoutBody_typeInput {
+  create: [CarCreateWithoutBody_typeInput!]
+  delete: [CarWhereUniqueInput!]
+  connect: [CarWhereUniqueInput!]
+  disconnect: [CarWhereUniqueInput!]
+  update: [CarUpdateWithWhereUniqueWithoutBody_typeInput!]
+  upsert: [CarUpsertWithWhereUniqueWithoutBody_typeInput!]
+}
+
+input CarUpdateManyWithoutFuel_typeInput {
+  create: [CarCreateWithoutFuel_typeInput!]
+  delete: [CarWhereUniqueInput!]
+  connect: [CarWhereUniqueInput!]
+  disconnect: [CarWhereUniqueInput!]
+  update: [CarUpdateWithWhereUniqueWithoutFuel_typeInput!]
+  upsert: [CarUpsertWithWhereUniqueWithoutFuel_typeInput!]
 }
 
 input CarUpdateManyWithoutTrimInput {
@@ -612,16 +960,64 @@ input CarUpdateManyWithoutTrimInput {
   upsert: [CarUpsertWithWhereUniqueWithoutTrimInput!]
 }
 
-input CarUpdateWithoutTrimDataInput {
+input CarUpdateWithoutBody_typeDataInput {
+  trim: CarTrimUpdateOneWithoutCarsInput
+  fuel_type: CarFuelTypeUpdateOneWithoutCarsInput
+  year_from: Int
+  year_to: Int
   zero_to_60: Float
   no_of_doors: Int
   no_of_seats: Int
   power_ps: Int
 }
 
+input CarUpdateWithoutFuel_typeDataInput {
+  trim: CarTrimUpdateOneWithoutCarsInput
+  body_type: CarBodyTypeUpdateOneWithoutCarsInput
+  year_from: Int
+  year_to: Int
+  zero_to_60: Float
+  no_of_doors: Int
+  no_of_seats: Int
+  power_ps: Int
+}
+
+input CarUpdateWithoutTrimDataInput {
+  body_type: CarBodyTypeUpdateOneWithoutCarsInput
+  fuel_type: CarFuelTypeUpdateOneWithoutCarsInput
+  year_from: Int
+  year_to: Int
+  zero_to_60: Float
+  no_of_doors: Int
+  no_of_seats: Int
+  power_ps: Int
+}
+
+input CarUpdateWithWhereUniqueWithoutBody_typeInput {
+  where: CarWhereUniqueInput!
+  data: CarUpdateWithoutBody_typeDataInput!
+}
+
+input CarUpdateWithWhereUniqueWithoutFuel_typeInput {
+  where: CarWhereUniqueInput!
+  data: CarUpdateWithoutFuel_typeDataInput!
+}
+
 input CarUpdateWithWhereUniqueWithoutTrimInput {
   where: CarWhereUniqueInput!
   data: CarUpdateWithoutTrimDataInput!
+}
+
+input CarUpsertWithWhereUniqueWithoutBody_typeInput {
+  where: CarWhereUniqueInput!
+  update: CarUpdateWithoutBody_typeDataInput!
+  create: CarCreateWithoutBody_typeInput!
+}
+
+input CarUpsertWithWhereUniqueWithoutFuel_typeInput {
+  where: CarWhereUniqueInput!
+  update: CarUpdateWithoutFuel_typeDataInput!
+  create: CarCreateWithoutFuel_typeInput!
 }
 
 input CarUpsertWithWhereUniqueWithoutTrimInput {
@@ -646,6 +1042,24 @@ input CarWhereInput {
   id_ends_with: ID
   id_not_ends_with: ID
   trim: CarTrimWhereInput
+  body_type: CarBodyTypeWhereInput
+  fuel_type: CarFuelTypeWhereInput
+  year_from: Int
+  year_from_not: Int
+  year_from_in: [Int!]
+  year_from_not_in: [Int!]
+  year_from_lt: Int
+  year_from_lte: Int
+  year_from_gt: Int
+  year_from_gte: Int
+  year_to: Int
+  year_to_not: Int
+  year_to_in: [Int!]
+  year_to_not_in: [Int!]
+  year_to_lt: Int
+  year_to_lte: Int
+  year_to_gt: Int
+  year_to_gte: Int
   zero_to_60: Float
   zero_to_60_not: Float
   zero_to_60_in: [Float!]
@@ -696,6 +1110,18 @@ type Mutation {
   upsertCar(where: CarWhereUniqueInput!, create: CarCreateInput!, update: CarUpdateInput!): Car!
   deleteCar(where: CarWhereUniqueInput!): Car
   deleteManyCars(where: CarWhereInput): BatchPayload!
+  createCarBodyType(data: CarBodyTypeCreateInput!): CarBodyType!
+  updateCarBodyType(data: CarBodyTypeUpdateInput!, where: CarBodyTypeWhereUniqueInput!): CarBodyType
+  updateManyCarBodyTypes(data: CarBodyTypeUpdateManyMutationInput!, where: CarBodyTypeWhereInput): BatchPayload!
+  upsertCarBodyType(where: CarBodyTypeWhereUniqueInput!, create: CarBodyTypeCreateInput!, update: CarBodyTypeUpdateInput!): CarBodyType!
+  deleteCarBodyType(where: CarBodyTypeWhereUniqueInput!): CarBodyType
+  deleteManyCarBodyTypes(where: CarBodyTypeWhereInput): BatchPayload!
+  createCarFuelType(data: CarFuelTypeCreateInput!): CarFuelType!
+  updateCarFuelType(data: CarFuelTypeUpdateInput!, where: CarFuelTypeWhereUniqueInput!): CarFuelType
+  updateManyCarFuelTypes(data: CarFuelTypeUpdateManyMutationInput!, where: CarFuelTypeWhereInput): BatchPayload!
+  upsertCarFuelType(where: CarFuelTypeWhereUniqueInput!, create: CarFuelTypeCreateInput!, update: CarFuelTypeUpdateInput!): CarFuelType!
+  deleteCarFuelType(where: CarFuelTypeWhereUniqueInput!): CarFuelType
+  deleteManyCarFuelTypes(where: CarFuelTypeWhereInput): BatchPayload!
   createCarMake(data: CarMakeCreateInput!): CarMake!
   updateCarMake(data: CarMakeUpdateInput!, where: CarMakeWhereUniqueInput!): CarMake
   updateManyCarMakes(data: CarMakeUpdateManyMutationInput!, where: CarMakeWhereInput): BatchPayload!
@@ -862,6 +1288,12 @@ type Query {
   car(where: CarWhereUniqueInput!): Car
   cars(where: CarWhereInput, orderBy: CarOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Car]!
   carsConnection(where: CarWhereInput, orderBy: CarOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CarConnection!
+  carBodyType(where: CarBodyTypeWhereUniqueInput!): CarBodyType
+  carBodyTypes(where: CarBodyTypeWhereInput, orderBy: CarBodyTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CarBodyType]!
+  carBodyTypesConnection(where: CarBodyTypeWhereInput, orderBy: CarBodyTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CarBodyTypeConnection!
+  carFuelType(where: CarFuelTypeWhereUniqueInput!): CarFuelType
+  carFuelTypes(where: CarFuelTypeWhereInput, orderBy: CarFuelTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CarFuelType]!
+  carFuelTypesConnection(where: CarFuelTypeWhereInput, orderBy: CarFuelTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CarFuelTypeConnection!
   carMake(where: CarMakeWhereUniqueInput!): CarMake
   carMakes(where: CarMakeWhereInput, orderBy: CarMakeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CarMake]!
   carMakesConnection(where: CarMakeWhereInput, orderBy: CarMakeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CarMakeConnection!
@@ -882,6 +1314,8 @@ type Query {
 
 type Subscription {
   car(where: CarSubscriptionWhereInput): CarSubscriptionPayload
+  carBodyType(where: CarBodyTypeSubscriptionWhereInput): CarBodyTypeSubscriptionPayload
+  carFuelType(where: CarFuelTypeSubscriptionWhereInput): CarFuelTypeSubscriptionPayload
   carMake(where: CarMakeSubscriptionWhereInput): CarMakeSubscriptionPayload
   carModel(where: CarModelSubscriptionWhereInput): CarModelSubscriptionPayload
   carTrim(where: CarTrimSubscriptionWhereInput): CarTrimSubscriptionPayload
