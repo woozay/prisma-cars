@@ -32,6 +32,6 @@ var models = [
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
   typeDefs,
   models,
-  endpoint: `https://eu1.prisma.sh/nab/prisma-test/dev`
+  endpoint: `https://eu1.prisma.sh/nabeel-amir/database/prisma-cars`
 });
 exports.prisma = new exports.Prisma();

@@ -8,3 +8,5 @@ mutation {
     id
   }
 }
+
+Run docker-compose up to get prisma server running, change endpoint in prisma.yml

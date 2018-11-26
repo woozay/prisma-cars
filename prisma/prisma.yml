@@ -1,4 +1,6 @@
-endpoint: https://eu1.prisma.sh/nab/prisma-test/dev
+#endpoint: https://eu1.prisma.sh/nab/prisma-test/dev
+endpoint: https://eu1.prisma.sh/nabeel-amir/database/prisma-cars
+#endpoint: http://localhost:4466
 datamodel: datamodel.prisma
 
 generate:
